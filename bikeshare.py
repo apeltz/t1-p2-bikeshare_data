@@ -284,6 +284,42 @@ def user_stats(df):
     print('-'*40)
 
 
+def show_rows(df):
+    """
+    I didn't see this function in the original template or rubric as a requirement, but got
+    feedback in my initial submission indicating that I should have this function. Received this
+    comment in my initial submission:
+
+        display_data() functionality is missing.
+
+        The expected functionality is:
+            Displays five lines of data if the user specifies that they would like to. 
+            After displaying five lines, ask the user if they would like to see five more, 
+            continuing asking until they say stop.
+    """
+
+    print('\nDisplaying Data Rows...\n')
+    start_time = time.time()
+
+    current_count = 0
+    inc = 5
+    while True:
+        if current_count == 0:
+            show = input('\nWould you like to show the first {0} rows of data?\n'.format(str(inc)))
+        else:
+            show = input('\nWould you like to show the next {0} rows of data?\n'.format(str(inc)))
+        if show == 'y' or show == 'yes':
+            text = '\nShowing rows {0} through {1}:\n'.format(str(current_count), str(current_count+inc-1))
+            cprint(text, 'white')
+            cprint(df.iloc[current_count:current_count + inc], 'cyan', attrs=['bold'])
+            current_count += inc
+        else:
+            break
+
+    print("\nThis took %s seconds." % (time.time() - start_time))
+    print('-'*40)
+
+
 def main():
     while True:
         city, month, day = get_filters()
@@ -292,6 +328,7 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
+        show_rows(df)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
